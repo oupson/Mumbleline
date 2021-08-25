@@ -1,0 +1,6 @@
+﻿- Name: Mumbleline
+  Version: 1.0.0
+  DLL: Mumbleline.dll
+  Dependencies:
+    - Name: Everest
+      Version: 1.0.0
