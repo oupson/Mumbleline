@@ -7,17 +7,16 @@ namespace MumbleTest
     {
         static void Main(string[] args)
         {
-            var mumble = new MumbleLink();
+            var mumble = MumbleLink.GetNewInstance();
 
-            mumble.Write(new Mumbleline.MumbleLink.Data.LinkInformations
+            mumble.WriteInfos(new Mumbleline.MumbleLink.Data.LinkInformations
             {
                 UiVersion = 1,
                 UiTick = 1,
-                Name = "TestMumbleSharp",
+                Name = "TestMumbleSharpFoo",
                 Context = "Connected",
                 Description = "foo"
             });
-
 
             Console.ReadLine();
         }

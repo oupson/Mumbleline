@@ -1,9 +1,9 @@
 ﻿using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
-namespace Mumbleline.MumbleLink.FFI
+namespace Mumbleline.MumbleLink.FFI.Windows
 {
-    class WindowsMappedFile : MumbleMappedFile
+    class WindowsMappedFile : MumbleMappedFile<WindowsLinkedMem>
     {
         private readonly MemoryMappedFile file;
 
@@ -12,9 +12,9 @@ namespace Mumbleline.MumbleLink.FFI
             file = MemoryMappedFile.CreateOrOpen(linkName, Marshal.SizeOf(typeof(LinkedMem)));
         }
 
-        public LinkedMem Read()
+        public WindowsLinkedMem Read()
         {
-            LinkedMem mem;
+            WindowsLinkedMem mem;
             using (var accessor = file.CreateViewAccessor())
             {
                 accessor.Read(0, out mem);
@@ -23,7 +23,7 @@ namespace Mumbleline.MumbleLink.FFI
             return mem;
         }
 
-        public void Write(LinkedMem mem)
+        public void Write(WindowsLinkedMem mem)
         {
             using (var accessor = file.CreateViewAccessor())
             {

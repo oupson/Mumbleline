@@ -21,9 +21,9 @@ namespace Mumbleline
         // Load runs before Celeste itself has initialized properly.
         public override void Load()
         {
-            mumbler = new MumbleLink.MumbleLink();
+            mumbler = new MumbleLink.MumbleLink.GetNewInstance();
 
-            mumbler.Write(new LinkInformations
+            mumbler.WriteInfos(new LinkInformations
             {
                 UiVersion = 1,
                 UiTick = 1,
@@ -41,7 +41,7 @@ namespace Mumbleline
 
         private Celeste.LevelData MapData_StartLevel(On.Celeste.MapData.orig_StartLevel orig, Celeste.MapData self)
         {
-            mumbler.Write(new LinkInformations
+            mumbler.WriteInfos(new LinkInformations
             {
                 Context = string.Format("CELESTE/{0}", self.Data.Name)
             });

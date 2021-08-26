@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Mumbleline.MumbleLink.FFI
+﻿namespace Mumbleline.MumbleLink.FFI
 {
-    interface MumbleMappedFile
+    public interface MumbleMappedFile<T> where T : LinkedMem
     {
-        LinkedMem Read();
-        void Write(LinkedMem mem);
+        T Read();
+        void Write(T mem);
         void Tick();
     }
 }
