@@ -1,9 +1,9 @@
 ﻿namespace Mumbleline.MumbleLink.FFI
 {
-    public interface MumbleMappedFile<T> where T : LinkedMem
+    public interface IMumbleMappedFile<T> where T : ILinkedMem
     {
         T Read();
-        void Write(T mem);
+        void Write(ref T mem);
         void Tick();
     }
 }

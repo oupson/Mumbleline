@@ -5,7 +5,7 @@ using Mumbleline.MumbleLink.Data;
 namespace Mumbleline.MumbleLink.FFI.Windows
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public unsafe struct WindowsLinkedMem : LinkedMem
+    public unsafe struct WindowsLinkedMem : ILinkedMem
     {
         public UInt32 uiVersion;
         public UInt32 uiTick;
@@ -78,7 +78,7 @@ namespace Mumbleline.MumbleLink.FFI.Windows
             }
         }
 
-        public LinkedMem UpdateFrom(LinkInformations infos)
+        public void UpdateFrom(LinkInformations infos)
         {
             unsafe
             {
@@ -146,9 +146,6 @@ namespace Mumbleline.MumbleLink.FFI.Windows
                     fixed(char* descPtr = description)
                         CopyWStringInto(infos.Description, descPtr, 2048);
             }
-
-
-            return this;
         }
 
         private unsafe void CopyWStringInto(string str, char* mem, int size)

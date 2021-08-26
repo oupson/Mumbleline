@@ -1,8 +1,5 @@
 ﻿using Mumbleline.MumbleLink.Data;
-using Mumbleline.MumbleLink.FFI;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Mumbleline.MumbleLink
 {
@@ -26,7 +23,10 @@ namespace Mumbleline.MumbleLink
             {
                 return new LinuxLink();
             }
-            return new WindowsLink();
+            else
+            {
+                return new WindowsLink();
+            }
         }
     }
 }

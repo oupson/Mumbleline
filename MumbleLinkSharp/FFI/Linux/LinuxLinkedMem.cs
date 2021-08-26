@@ -5,8 +5,8 @@ using Mumbleline.MumbleLink.Data;
 
 namespace Mumbleline.MumbleLink.FFI.Linux
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public unsafe struct LinuxLinkedMem : LinkedMem
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public unsafe struct LinuxLinkedMem : ILinkedMem
     {
         public UInt32 uiVersion;
         public UInt32 uiTick;
@@ -80,7 +80,7 @@ namespace Mumbleline.MumbleLink.FFI.Linux
             }
         }
 
-        public LinkedMem UpdateFrom(LinkInformations infos)
+        public void UpdateFrom(LinkInformations infos)
         {
             unsafe
             {
@@ -148,9 +148,6 @@ namespace Mumbleline.MumbleLink.FFI.Linux
                     fixed (UInt32* descPtr = description)
                         CopyWStringInto(infos.Description, descPtr, 2048);
             }
-
-
-            return this;
         }
 
         private unsafe string ReadString(UInt32* str)

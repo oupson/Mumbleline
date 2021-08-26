@@ -2,9 +2,9 @@ using Mumbleline.MumbleLink.Data;
 
 namespace Mumbleline.MumbleLink.FFI
 {
-    public interface LinkedMem {
+    public interface ILinkedMem {
         void Tick();
-        LinkedMem UpdateFrom(LinkInformations infos);
+        void UpdateFrom(LinkInformations infos);
         LinkInformations ToInfos();
     }
 }

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Mumbleline.MumbleLink.FFI.Windows
 {
-    class WindowsMappedFile : MumbleMappedFile<WindowsLinkedMem>
+    class WindowsMappedFile : IMumbleMappedFile<WindowsLinkedMem>
     {
         private readonly MemoryMappedFile file;
 
@@ -23,7 +23,7 @@ namespace Mumbleline.MumbleLink.FFI.Windows
             return mem;
         }
 
-        public void Write(WindowsLinkedMem mem)
+        public void Write(ref WindowsLinkedMem mem)
         {
             using (var accessor = file.CreateViewAccessor())
             {

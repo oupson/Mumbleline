@@ -37,7 +37,7 @@ namespace Mumbleline.MumbleLink
             if (infos.UiTick == 0)
                 lastMem.Tick();
             lastMem.UpdateFrom(infos);
-            file.Write(lastMem);
+            file.Write(ref lastMem);
             mut.ReleaseMutex();
         }
 

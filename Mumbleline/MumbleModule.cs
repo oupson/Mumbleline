@@ -1,5 +1,4 @@
 ﻿using Celeste.Mod;
-using Mumbleline.MumbleLink;
 using Mumbleline.MumbleLink.Data;
 using System;
 
@@ -23,7 +22,7 @@ namespace Mumbleline
         public override void Load()
         {
             mumbler = MumbleLink.MumbleLink.GetNewInstance();
-
+           
             mumbler.WriteInfos(new LinkInformations
             {
                 UiVersion = 1,
@@ -34,7 +33,6 @@ namespace Mumbleline
                 CameraTop = new Vector3D(0, 1, 0),
                 Context = "NotConnected"
             });
-
 
             On.Celeste.Player.Update += Player_Update;
             On.Celeste.MapData.StartLevel += MapData_StartLevel;
