@@ -9,7 +9,7 @@ namespace Mumbleline.MumbleLink.FFI.Windows
 
         public WindowsMappedFile(string linkName = "MumbleLink")
         {
-            file = MemoryMappedFile.CreateOrOpen(linkName, Marshal.SizeOf(typeof(LinkedMem)));
+            file = MemoryMappedFile.CreateOrOpen(linkName, Marshal.SizeOf(typeof(WindowsLinkedMem)));
         }
 
         public WindowsLinkedMem Read()

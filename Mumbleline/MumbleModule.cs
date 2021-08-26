@@ -1,4 +1,5 @@
 ﻿using Celeste.Mod;
+using Mumbleline.MumbleLink;
 using Mumbleline.MumbleLink.Data;
 using System;
 
@@ -11,7 +12,7 @@ namespace Mumbleline
         private static readonly string TAG = "MumbleModule";
 
         private MumbleLink.MumbleLink mumbler = null;
-        
+
         public MumbleModule()
         {
             Instance = this;
@@ -21,7 +22,7 @@ namespace Mumbleline
         // Load runs before Celeste itself has initialized properly.
         public override void Load()
         {
-            mumbler = new MumbleLink.MumbleLink.GetNewInstance();
+            mumbler = MumbleLink.MumbleLink.GetNewInstance();
 
             mumbler.WriteInfos(new LinkInformations
             {
@@ -34,7 +35,7 @@ namespace Mumbleline
                 Context = "NotConnected"
             });
 
-           
+
             On.Celeste.Player.Update += Player_Update;
             On.Celeste.MapData.StartLevel += MapData_StartLevel;
         }
@@ -56,7 +57,7 @@ namespace Mumbleline
 
                 var facingVector = new Vector3D(0, 0, 1);
                 var pos = new Vector3D(exactPos.X / 16, exactPos.Y / 16, 0);
-                 mumbler.Write(new LinkInformations
+                mumbler.WriteInfos(new LinkInformations
                 {
                     AvatarPosition = pos,
                     CameraPosition = pos,
@@ -87,7 +88,7 @@ namespace Mumbleline
         {
             On.Celeste.Player.Update -= Player_Update;
             On.Celeste.MapData.StartLevel -= MapData_StartLevel;
-            mumbler.Dispose();
+            // mumbler.Dispose();
             mumbler = null;
         }
     }

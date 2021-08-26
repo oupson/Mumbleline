@@ -47,7 +47,6 @@ namespace Mumbleline.MumbleLink
             {
               
                 mut.WaitOne();
-                  Console.WriteLine("ticking, {0}", file.Read().ToInfos().ToString());
                 lastMem.Tick();
                 file.Tick();
                 mut.ReleaseMutex();
