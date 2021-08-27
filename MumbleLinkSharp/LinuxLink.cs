@@ -62,12 +62,13 @@ namespace Mumbleline.MumbleLink
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             tokenSource.Cancel();
             tickTask.Wait();
             tokenSource = null;
             tickTask = null;
+            file.Dispose();
         }
     }
 }

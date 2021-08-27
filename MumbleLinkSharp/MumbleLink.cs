@@ -3,7 +3,7 @@ using System;
 
 namespace Mumbleline.MumbleLink
 {
-    public abstract class MumbleLink
+    public abstract class MumbleLink : IDisposable
     {
         public abstract LinkInformations ReadInfos();
         public abstract void WriteInfos(LinkInformations infos);
@@ -28,5 +28,7 @@ namespace Mumbleline.MumbleLink
                 return new WindowsLink();
             }
         }
+
+        public abstract void Dispose();
     }
 }

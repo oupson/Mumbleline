@@ -1,9 +1,10 @@
-﻿using System.IO.MemoryMappedFiles;
+﻿using System;
+using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
 namespace Mumbleline.MumbleLink.FFI.Windows
 {
-    class WindowsMappedFile : IMumbleMappedFile<WindowsLinkedMem>
+    class WindowsMappedFile : IMumbleMappedFile<WindowsLinkedMem>, IDisposable
     {
         private readonly MemoryMappedFile file;
 
@@ -38,6 +39,10 @@ namespace Mumbleline.MumbleLink.FFI.Windows
                 var t = accessor.ReadUInt32(4);
                 accessor.Write(4, t + 1);
             }
+        }
+
+        public void Dispose() {
+            file.Dispose();
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Mumbleline.MumbleLink
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             tokenSource.Cancel();
             tickTask.Wait();
