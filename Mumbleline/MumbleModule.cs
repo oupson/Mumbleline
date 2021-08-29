@@ -9,8 +9,13 @@ namespace Mumbleline
         // Only one alive module instance can exist at any given time.
         public static MumbleModule Instance;
         private static readonly string TAG = "MumbleModule";
+        private bool isMumbleLoaded = false;
+        private bool wasLoadCalled = false;
 
         private MumbleLink.MumbleLink mumbler = null;
+
+        public override Type SettingsType => typeof(MumblineSettings);
+        public static MumblineSettings Settings => (MumblineSettings)Instance._Settings;
 
         public MumbleModule()
         {
@@ -21,21 +26,9 @@ namespace Mumbleline
         // Load runs before Celeste itself has initialized properly.
         public override void Load()
         {
-            mumbler = MumbleLink.MumbleLink.GetNewInstance();
-           
-            mumbler.WriteInfos(new LinkInformations
-            {
-                UiVersion = 1,
-                UiTick = 1,
-                Name = "Mumbleline",
-                Description = "A mumble link mod for Celeste",
-                AvatarTop = new Vector3D(0, 1, 0),
-                CameraTop = new Vector3D(0, 1, 0),
-                Context = "NotConnected"
-            });
-
-            On.Celeste.Player.Update += Player_Update;
-            On.Celeste.MapData.StartLevel += MapData_StartLevel;
+            wasLoadCalled = true;
+            if (Settings.Link)
+                LoadMumbline();
         }
 
         private Celeste.LevelData MapData_StartLevel(On.Celeste.MapData.orig_StartLevel orig, Celeste.MapData self)
@@ -52,8 +45,11 @@ namespace Mumbleline
             try
             {
                 var exactPos = self.ExactPosition;
-
-                var facingVector = new Vector3D(0, 0, 1);
+                Vector3D facingVector;
+                if (Settings.PositionnalAudio)
+                    facingVector = new Vector3D(0, 0, 1);
+                else
+                    facingVector = new Vector3D(0, 1, 0);
                 var pos = new Vector3D(exactPos.X / 16, exactPos.Y / 16, 0);
                 mumbler.WriteInfos(new LinkInformations
                 {
@@ -81,13 +77,47 @@ namespace Mumbleline
         {
         }
 
+        public void LoadMumbline()
+        {
+            if (wasLoadCalled && !isMumbleLoaded)
+            {
+                Logger.Log(TAG, "Loading Mumbleline");
+                mumbler = MumbleLink.MumbleLink.GetNewInstance();
+
+                mumbler.WriteInfos(new LinkInformations
+                {
+                    UiVersion = 1,
+                    UiTick = 1,
+                    Name = "Mumbleline",
+                    Description = "A mumble link mod for Celeste",
+                    AvatarTop = new Vector3D(0, 1, 0),
+                    CameraTop = new Vector3D(0, 1, 0),
+                    Context = "NotConnected"
+                });
+
+                On.Celeste.Player.Update += Player_Update;
+                On.Celeste.MapData.StartLevel += MapData_StartLevel;
+                isMumbleLoaded = true;
+            }
+        }
+
+        public void UnloadMumbline()
+        {
+            if (wasLoadCalled && isMumbleLoaded)
+            {
+                Logger.Log(TAG, "Unloading Mumbleline");
+                On.Celeste.Player.Update -= Player_Update;
+                On.Celeste.MapData.StartLevel -= MapData_StartLevel;
+                mumbler.Dispose();
+                mumbler = null;
+                isMumbleLoaded = false;
+            }
+        }
+
         // Unload the entirety of your mod's content. Free up any native resources.
         public override void Unload()
         {
-            On.Celeste.Player.Update -= Player_Update;
-            On.Celeste.MapData.StartLevel -= MapData_StartLevel;
-            // mumbler.Dispose();
-            mumbler = null;
+            UnloadMumbline();
         }
     }
 }

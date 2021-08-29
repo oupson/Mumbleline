@@ -1,0 +1,3 @@
+modoptions_mumbline_title=Mumbline
+modoptions_mumbline_link=Link
+modoptions_mumbline_PositionnalAudio=Positionnal Audio
