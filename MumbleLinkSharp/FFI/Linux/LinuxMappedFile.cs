@@ -58,7 +58,7 @@ namespace MumbleLinkSharp.FFI.Linux
                 }
 
                 var resMapping = Bindings.mmap(null, (UIntPtr)Marshal.SizeOf<LinuxLinkedMem>(), Bindings.PROT_READ | Bindings.PROT_WRITE, Bindings.MAP_SHARED, shmfd, (IntPtr)0);
-                if ((Int64)resMapping < 0)
+                if ((long)resMapping < 0)
                 {
                     throw new LinuxFFIException("mmap", Marshal.GetLastWin32Error());
                 }

@@ -47,7 +47,6 @@ namespace MumbleLinkSharp.FFI.Windows
                     identity = Marshal.PtrToStringUni((IntPtr)identityPtr);
                 }
 
-
                 fixed (byte* contextPtr = this.context)
                 {
                     context = Marshal.PtrToStringAnsi((IntPtr)contextPtr, (int)this.context_len);
@@ -74,7 +73,6 @@ namespace MumbleLinkSharp.FFI.Windows
                     Context = context,
                     Description = description,
                 };
-
             }
         }
 
@@ -155,7 +153,7 @@ namespace MumbleLinkSharp.FFI.Windows
             if (name != null)
             {
 
-                while (index < size - 1 && name[index] != 0)
+                while (index < size - 2 && name[index] != 0)
                 {
                     mem[index] = name[index];
                     index++;

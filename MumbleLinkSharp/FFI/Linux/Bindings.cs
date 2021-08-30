@@ -38,15 +38,48 @@ namespace MumbleLinkSharp.FFI.Linux
         public static int PROT_WRITE = 0x2;
         public static int MAP_SHARED = 0x01;
 
+        public static int ERANGE = 34;
+
         public static string GetErrorCodeDescription(int errorCode)
         {
             unsafe
             {
-                char* ptr = (char*)Marshal.AllocHGlobal(256).ToPointer();
-                var resCode = __xpg_strerror_r(errorCode, ptr, (UIntPtr)256);
-                var res = Marshal.PtrToStringAuto((IntPtr)ptr);
-                Marshal.FreeHGlobal((IntPtr)ptr);
-                return res;
+                var size = 256;
+                while (true)
+                {
+                    char* ptr = (char*)Marshal.AllocHGlobal(size).ToPointer();
+                    var resCode = __xpg_strerror_r(errorCode, ptr, (UIntPtr)size);
+                    if (resCode < 0)
+                    {
+                        Marshal.FreeHGlobal((IntPtr)ptr);
+                        if (Marshal.GetLastWin32Error() == ERANGE)
+                        {
+                            size *= 2;
+                        }
+                        else
+                        {
+                            return "Failed to get error message";
+                        }
+                    }
+                    else if (resCode > 0)
+                    {
+                        Marshal.FreeHGlobal((IntPtr)ptr);
+                        if (resCode == ERANGE)
+                        {
+                            size *= 2;
+                        }
+                        else
+                        {
+                            return "Failed to get error message";
+                        }
+                    }
+                    else
+                    {
+                        var res = Marshal.PtrToStringAuto((IntPtr)ptr);
+                        Marshal.FreeHGlobal((IntPtr)ptr);
+                        return res;
+                    }
+                }
             }
         }
     }
