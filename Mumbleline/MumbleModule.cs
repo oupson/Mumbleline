@@ -1,5 +1,6 @@
 ﻿using Celeste.Mod;
-using Mumbleline.MumbleLink.Data;
+using MumbleLinkSharp;
+using MumbleLinkSharp.Data;
 using System;
 
 namespace Mumbleline
@@ -12,7 +13,7 @@ namespace Mumbleline
         private bool isMumbleLoaded = false;
         private bool wasLoadCalled = false;
 
-        private MumbleLink.MumbleLink mumbler = null;
+        private MumbleLink mumbler = null;
 
         public override Type SettingsType => typeof(MumblineSettings);
         public static MumblineSettings Settings => (MumblineSettings)Instance._Settings;
@@ -29,6 +30,22 @@ namespace Mumbleline
             wasLoadCalled = true;
             if (Settings.Link)
                 LoadMumbline();
+        }
+
+        // Optional, initialize anything after Celeste has initialized itself properly.
+        public override void Initialize()
+        {
+        }
+
+        // Optional, do anything requiring either the Celeste or mod content here.
+        public override void LoadContent(bool firstLoad)
+        {
+        }
+
+        // Unload the entirety of your mod's content. Free up any native resources.
+        public override void Unload()
+        {
+            UnloadMumbline();
         }
 
         private Celeste.LevelData MapData_StartLevel(On.Celeste.MapData.orig_StartLevel orig, Celeste.MapData self)
@@ -67,14 +84,13 @@ namespace Mumbleline
             orig(self);
         }
 
-        // Optional, initialize anything after Celeste has initialized itself properly.
-        public override void Initialize()
+        private System.Collections.IEnumerator OuiChapterSelect_Enter(On.Celeste.OuiChapterSelect.orig_Enter orig, Celeste.OuiChapterSelect self, Celeste.Oui from)
         {
-        }
-
-        // Optional, do anything requiring either the Celeste or mod content here.
-        public override void LoadContent(bool firstLoad)
-        {
+            mumbler.WriteInfos(new LinkInformations
+            {
+                Context = string.Format("CELESTE/ONMAP")
+            });
+            return orig(self, from);
         }
 
         public void LoadMumbline()
@@ -82,7 +98,7 @@ namespace Mumbleline
             if (wasLoadCalled && !isMumbleLoaded)
             {
                 Logger.Log(TAG, "Loading Mumbleline");
-                mumbler = MumbleLink.MumbleLink.GetNewInstance();
+                mumbler = MumbleLink.GetNewInstance();
 
                 mumbler.WriteInfos(new LinkInformations
                 {
@@ -97,6 +113,7 @@ namespace Mumbleline
 
                 On.Celeste.Player.Update += Player_Update;
                 On.Celeste.MapData.StartLevel += MapData_StartLevel;
+                On.Celeste.OuiChapterSelect.Enter += OuiChapterSelect_Enter;
                 isMumbleLoaded = true;
             }
         }
@@ -108,16 +125,11 @@ namespace Mumbleline
                 Logger.Log(TAG, "Unloading Mumbleline");
                 On.Celeste.Player.Update -= Player_Update;
                 On.Celeste.MapData.StartLevel -= MapData_StartLevel;
+                On.Celeste.OuiChapterSelect.Enter -= OuiChapterSelect_Enter;
                 mumbler.Dispose();
                 mumbler = null;
                 isMumbleLoaded = false;
             }
-        }
-
-        // Unload the entirety of your mod's content. Free up any native resources.
-        public override void Unload()
-        {
-            UnloadMumbline();
         }
     }
 }

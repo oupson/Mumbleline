@@ -1,8 +1,9 @@
-using Mumbleline.MumbleLink.Data;
+using MumbleLinkSharp.Data;
 
-namespace Mumbleline.MumbleLink.FFI
+namespace MumbleLinkSharp.FFI
 {
-    public interface ILinkedMem {
+    public interface ILinkedMem
+    {
         void Tick();
         void UpdateFrom(LinkInformations infos);
         LinkInformations ToInfos();

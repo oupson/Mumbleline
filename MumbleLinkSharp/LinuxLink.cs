@@ -1,11 +1,16 @@
-using Mumbleline.MumbleLink.Data;
-using Mumbleline.MumbleLink.FFI.Linux;
+using MumbleLinkSharp.Data;
+using MumbleLinkSharp.FFI.Linux;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mumbleline.MumbleLink
+namespace MumbleLinkSharp
 {
+    /// <summary>
+    /// Provide a way to speak to the mumble link plugin in linux.
+    /// As linux and windows mapped file are different, and the fact that .net mappedfile are not fully supported on linux, different classes are required.
+    /// However, you should use MumbleLink instead of this class, as it provide an abstraction over operating systems.
+    /// </summary>
     public class LinuxLink : MumbleLink, IDisposable
     {
         private LinuxMappedFile file;
@@ -26,6 +31,11 @@ namespace Mumbleline.MumbleLink
             tickTask = TickTaskFunction(tokenSource.Token);
         }
 
+
+        /// <summary>
+        /// Read the current informations from the shared memory.
+        /// </summary>
+        /// <returns>The informations shared with mumble.</returns>
         public override LinkInformations ReadInfos()
         {
             var mem = file.Read();
@@ -33,6 +43,11 @@ namespace Mumbleline.MumbleLink
             return mem.ToInfos();
         }
 
+
+        /// <summary>
+        /// Write informations to mumble link's shared memory.
+        /// </summary>
+        /// <param name="infos">The informations to write. If a member of this class is null, the current member in the shared memory will not be overwritten.</param>
         public override void WriteInfos(LinkInformations infos)
         {
             mut.WaitOne();
@@ -48,12 +63,11 @@ namespace Mumbleline.MumbleLink
             }
             mut.ReleaseMutex();
         }
-
-        public async Task TickTaskFunction(CancellationToken token)
+        private async Task TickTaskFunction(CancellationToken token)
         {
             while (!token.IsCancellationRequested)
             {
-              
+
                 mut.WaitOne();
                 lastMem.Tick();
                 file.Tick();
@@ -64,11 +78,14 @@ namespace Mumbleline.MumbleLink
 
         public override void Dispose()
         {
+            mut.WaitOne();
             tokenSource.Cancel();
             tickTask.Wait();
             tokenSource = null;
             tickTask = null;
             file.Dispose();
+            file = null;
+            mut.ReleaseMutex();
         }
     }
 }

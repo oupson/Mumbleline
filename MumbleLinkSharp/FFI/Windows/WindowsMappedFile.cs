@@ -2,7 +2,7 @@
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
-namespace Mumbleline.MumbleLink.FFI.Windows
+namespace MumbleLinkSharp.FFI.Windows
 {
     class WindowsMappedFile : IMumbleMappedFile<WindowsLinkedMem>, IDisposable
     {
@@ -41,7 +41,8 @@ namespace Mumbleline.MumbleLink.FFI.Windows
             }
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             file.Dispose();
         }
     }

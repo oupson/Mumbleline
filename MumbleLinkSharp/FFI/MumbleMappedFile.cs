@@ -1,4 +1,4 @@
-﻿namespace Mumbleline.MumbleLink.FFI
+﻿namespace MumbleLinkSharp.FFI
 {
     public interface IMumbleMappedFile<T> where T : ILinkedMem
     {

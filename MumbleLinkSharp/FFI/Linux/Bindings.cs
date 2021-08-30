@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Mumbleline.MumbleLink.FFI.Linux
+namespace MumbleLinkSharp.FFI.Linux
 {
     class Bindings
     {

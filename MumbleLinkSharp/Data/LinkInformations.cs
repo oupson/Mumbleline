@@ -1,10 +1,11 @@
-﻿using Mumbleline.MumbleLink.FFI;
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Text;
 
-namespace Mumbleline.MumbleLink.Data
+namespace MumbleLinkSharp.Data
 {
+    /// <summary>
+    /// An abstraction over mumble's linked mem.
+    /// You should always use this class instead of linux or windows linked mem
+    /// </summary>
     public class LinkInformations
     {
         public uint UiVersion { get; set; }

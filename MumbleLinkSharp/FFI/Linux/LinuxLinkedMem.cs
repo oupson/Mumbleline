@@ -1,9 +1,9 @@
+using MumbleLinkSharp.Data;
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using Mumbleline.MumbleLink.Data;
 
-namespace Mumbleline.MumbleLink.FFI.Linux
+namespace MumbleLinkSharp.FFI.Linux
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public unsafe struct LinuxLinkedMem : ILinkedMem

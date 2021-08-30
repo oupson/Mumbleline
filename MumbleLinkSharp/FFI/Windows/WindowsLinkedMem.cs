@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MumbleLinkSharp.Data;
+using System;
 using System.Runtime.InteropServices;
-using Mumbleline.MumbleLink.Data;
 
-namespace Mumbleline.MumbleLink.FFI.Windows
+namespace MumbleLinkSharp.FFI.Windows
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe struct WindowsLinkedMem : ILinkedMem
@@ -110,7 +110,7 @@ namespace Mumbleline.MumbleLink.FFI.Windows
                 }
 
                 if (infos.Name != null)
-                    fixed(char* namePtr = name)
+                    fixed (char* namePtr = name)
                         CopyWStringInto(infos.Name, namePtr, 256);
 
                 if (infos.CameraPosition != null)
@@ -135,15 +135,15 @@ namespace Mumbleline.MumbleLink.FFI.Windows
                 }
 
                 if (infos.Identity != null)
-                    fixed(char* identityPtr = identity)
+                    fixed (char* identityPtr = identity)
                         CopyWStringInto(infos.Identity, identityPtr, 256);
 
                 if (infos.Context != null)
-                    fixed(byte* contextPtr = context)
+                    fixed (byte* contextPtr = context)
                         context_len = CopyAStringInto(infos.Context, contextPtr, 256);
 
                 if (infos.Description != null)
-                    fixed(char* descPtr = description)
+                    fixed (char* descPtr = description)
                         CopyWStringInto(infos.Description, descPtr, 2048);
             }
         }

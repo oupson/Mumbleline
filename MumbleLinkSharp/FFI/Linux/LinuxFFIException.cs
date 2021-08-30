@@ -1,6 +1,6 @@
 using System;
 
-namespace Mumbleline.MumbleLink.FFI.Linux
+namespace MumbleLinkSharp.FFI.Linux
 {
     public class LinuxFFIException : Exception
     {

@@ -1,12 +1,16 @@
-﻿namespace Mumbleline.MumbleLink.Data
+﻿namespace MumbleLinkSharp.Data
 {
+    /// <summary>
+    /// Represent an array of 3 floats.
+    /// </summary>
     public class Vector3D
     {
-        public float X;
-        public float Y;
-        public float Z;
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
 
         public Vector3D() : this(0, 0, 0) { }
+
         public Vector3D(float X, float Y, float Z)
         {
             this.X = X;

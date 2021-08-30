@@ -1,4 +1,5 @@
-﻿using Mumbleline.MumbleLink;
+﻿using MumbleLinkSharp;
+using MumbleLinkSharp.Data;
 using System;
 
 namespace MumbleTest
@@ -9,7 +10,7 @@ namespace MumbleTest
         {
             var mumble = MumbleLink.GetNewInstance();
 
-            mumble.WriteInfos(new Mumbleline.MumbleLink.Data.LinkInformations
+            mumble.WriteInfos(new LinkInformations
             {
                 UiVersion = 1,
                 UiTick = 1,
